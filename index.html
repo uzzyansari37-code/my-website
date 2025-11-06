@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Custom Website</title>
+  <style>
+    /* Background and text colors */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ffc0cb, #d87093);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow-x: hidden;
+    }
+    .container {
+      text-align: center;
+      max-width: 600px;
+      padding: 20px 30px;
+      background-color: rgba(255, 182, 193, 0.2);
+      border-radius: 15px;
+      box-shadow: 0 0 15px 4px rgba(255, 182, 193, 0.4);
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      white-space: pre-wrap;
+    }
+    button {
+      background-color: #d87093;
+      border: none;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin: 0 10px 10px 10px;
+      transition: background-color 0.3s ease;
+      position: relative;
+      user-select: none;
+    }
+    button:hover:not(.shake) {
+      background-color: #b55a74;
+    }
+    button:disabled {
+      cursor: default;
+      background-color: #a06b85;
+    }
+
+    /* Candle style */
+    .candle-container {
+      margin-bottom: 20px;
+    }
+    .candle {
+      position: relative;
+      margin: 0 auto 10px auto;
+      width: 50px;
+      height: 100px;
+      background: #fff0f5;
+      border-radius: 10px 10px 5px 5px;
+      box-shadow: inset 0 5px 10px #e29bbf;
+    }
+    .wick {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 10px;
+      background: #333;
+      border-radius: 2px;
+    }
+    .flame {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 20px;
+      background: radial-gradient(circle at 50% 50%, #ff4500, #ffa500 70%, transparent 80%);
+      border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+      animation: flicker 1s infinite alternate;
+    }
+    /* Off flame style */
+    .flame.off {
+      background: transparent;
+      animation: none;
+    }
+
+    @keyframes flicker {
+      0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateX(-50%) translateY(-3px) scale(1.1); opacity: 0.8; }
+    }
+
+    /* Shake animation for 'No' button */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-10px); }
+      40%, 80% { transform: translateX(10px); }
+    }
+    button.shake {
+      animation: shake 0.5s infinite;
+      pointer-events: none;
+      background-color: #a33;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="app">
+    <!-- Content injected here -->
+  </div>
+
+  <script>
+    const app = document.getElementById('app');
+
+    // Page 1: Candle with countdown from 5, flame off after countdown 0, then go to page 2
+    function page1() {
+      app.innerHTML = `
+        <h1>below out the candle</h1>
+        <div class="candle-container">
+          <div class="candle">
+            <div class="wick"></div>
+            <div class="flame" id="flame"></div>
+          </div>
+          <div id="countdown" style="font-size: 1.5rem;">5</div>
+        </div>
+      `;
+
+      let counter = 5;
+      const countdownElem = document.getElementById('countdown');
+      const flameElem = document.getElementById('flame');
+
+      const interval = setInterval(() => {
+        counter--;
+        countdownElem.textContent = counter >= 0 ? counter : '';
+        if (counter < 0) {
+          clearInterval(interval);
+          // Turn off flame after countdown finished
+          flameElem.classList.add('off');
+          // Small delay before moving to next page for effect
+          setTimeout(() => {
+            page2();
+          }, 1000);
+        }
+      }, 1000);
+    }
+
+    // Page 2
+    function page2() {
+      app.innerHTML = `
+        <h1>for my chashmish girl</h1>
+        <p>I don’t know what magic you have, but my heart listens to you more than it listens to me.</p>
+        <button id="nextBtn">go to next page</button>
+      `;
+      document.getElementById('nextBtn').onclick = () => {
+        page3();
+      };
+    }
+
+    // Page 3
+    function page3() {
+      app.innerHTML = `
+        <h1>❤️</h1>
+        <p>“If Allah wills, we will always be together.\nBut I want to tell you something...”</p>
+        <button id="okBtn">ok</button>
+      `;
+      document.getElementById('okBtn').onclick = () => {
+        page4();
+      };
+    }
+
+    // Page 4 with Yes / No buttons + shake functionality on No
+    function page4() {
+      app.innerHTML = `
+        <h1>🤍For You, My Love</h1>
+        <p>
+Hey my girl, I hope your heart is smiling today.
+Wallahi, you are such a precious gift in my life, and I'm thankful that Allah brought you to me.
+I don’t want to rush anything; I just want to care for you, support you, and grow with you.
+My love for you isn’t just butterflies and excitement – it’s dua, patience, and understanding.
+I want to be the person who reminds you to smile, to pray, to stay hopeful.
+If Allah keeps our hearts connected, I promise to protect this bond with love.
+So tell me... with trust in Allah, would you hold my hand through this journey?
+        </p>
+        <button id="yesBtn">Yes</button>
+        <button id="noBtn">No</button>
+      `;
+
+      const yesBtn = document.getElementById('yesBtn');
+      const noBtn = document.getElementById('noBtn');
+
+      let noClicked = false;
+
+      noBtn.onclick = () => {
+        if (!noClicked) {
+          noClicked = true;
+          // Add shake effect and disable the button
+          noBtn.classList.add('shake');
+          noBtn.disabled = true;
+          // Also disable Yes button to follow instruction (optional)
+          // yesBtn.disabled = false; // Keep yes enabled as user can click yes anytime
+        }
+      };
+
+      yesBtn.onclick = () => {
+        // If no shake effect not active or yes clicked anyway, proceed
+        page5();
+      };
+    }
+
+    // Page 5 text + back button to page 4
+    function page5() {
+      app.innerHTML = `
+        <p style="font-size:1.3rem; line-height:1.5;">
+          🕊️Alhamdulillah 🤍<br><br>
+          Thank you for accepting this from your heart.<br>
+          May Allah keep our bond pure, kind, and filled with love and mercy.<br>
+          I pray He protects this connection, guides us, and keeps us close with good intentions.<br>
+          You made me genuinely happy today – and I’m grateful for you.<br><br>
+          In shaa Allah, this is just the beautiful beginning.
+        </p>
+        <button id="backBtn">Back</button>
+      `;
+
+      document.getElementById('backBtn').onclick = () => {
+        page4();
+      };
+    }
+
+    // Initialize with page 1
+    page1();
+  </script>
+</body>
+</html>
